@@ -28,7 +28,7 @@ int* reallocate(int* lst, int N, int n) {
 }
 
 int** transposed(int** lst, int n, int m) {
-    int ** new_lst = new int*[n * m];
+    int** new_lst = new int*[n * m];
     for (int i = 0; i < m; i++) {
         for (int j = 0; j < n; j++) {
             new_lst[i * m + j] = *lst;
