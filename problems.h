@@ -1,39 +1,63 @@
-#include <bits/stdc++.h>
+#include <vector>
 using namespace std;
 
 void delete11(vector<int> &v) {
-    for (int i = 0; i < v.size(); i++) if (v[i] % 11 == 0) v.erase(v.begin() + i);
+    auto it = v.begin();
+    while (it != v.end()) {
+        if (*it % 11 == 0) {
+            it = v.erase(it);
+        } else {
+            ++it;
+        }
+    }
 }
 
 void insertMany(vector<int> &v, int a, int b) {
-    int middle = v.size() / 2 + v.size() % 2;
-    while (a--) v.insert(v.begin() + (middle++), b);
+    for (int i = 0; i < a; ++i) {
+        int mid = (v.size() % 2 == 0) ? (v.size() / 2) : (v.size() / 2) + 1;
+        v.insert(v.begin() + mid, b);
+    }
 }
 
-int* allocate(int a, int b) {
-    if (a > b) return NULL;
-    int *lst = new int[b - a + 1];
-    for (int i = a; i <= b; i++) lst[i - a] = a;
-    return lst;
+int* allocateAndSet(int a, int b) {
+    if (a > b) return nullptr;
+    int size = b - a + 1;
+    int* arr = new int[size];
+    for (int i = 0; i < size; ++i) {
+        arr[i] = a + i;
+    }
+    return arr;
 }
 
-void deallocate(int* lst) {
-    delete[] lst;
+void deallocate(int* arr) {
+    delete[] arr;
+    arr = nullptr;
 }
 
-int* reallocate(int* lst, int N, int n) {
-    int* new_lst = new int[N - n];
-    for (int i = n; i < N; i++) new_lst[i] = lst[i - n];
-    return new_lst;
+int* reallocate(int *arr, int N, int n) {
+    int newSize = N - n;
+    int* newArr = new int[newSize];
+    for (int i = 0; i < newSize; ++i) {
+        newArr[i] = arr[i + n];
+    }
+    return newArr;
 }
 
-int** transposed(int** lst, int n, int m) {
-    int** new_lst = new int*[n * m];
-    for (int i = 0; i < m; i++) {
-        for (int j = 0; j < n; j++) {
-            new_lst[i * m + j] = *lst;
-            lst++;
+int** transposed(int **arr, int n, int m) {
+    int **newArr = new int*[m];
+    for (int i = 0; i < m; ++i) {
+        newArr[i] = new int[n];
+        for (int j = 0; j < n; ++j) {
+            newArr[i][j] = arr[j][i];
         }
     }
-    return new_lst;
+    return newArr;
+}
+
+void deallocateMatrix(int**& matrix, int rows) {
+    for (int i = 0; i < rows; ++i) {
+        delete[] matrix[i];
+    }
+    delete[] matrix;
+    matrix = nullptr;
 }
